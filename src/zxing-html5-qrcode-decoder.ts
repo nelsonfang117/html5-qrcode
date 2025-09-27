@@ -18,7 +18,8 @@ import {
     QrcodeResultFormat,
     Html5QrcodeSupportedFormats,
     Logger,
-    QrcodeDecoderAsync
+    QrcodeDecoderAsync,
+    QrBounds
 } from "./core";
 
 /**
@@ -108,11 +109,50 @@ export class ZXingHtml5QrcodeDecoder implements QrcodeDecoderAsync {
             = new ZXing.BinaryBitmap(
                 new ZXing.HybridBinarizer(luminanceSource));
         let result = zxingDecoder.decode(binaryBitmap);
+
+        // Extract coordinate data from result points if available
+        let bounds = undefined;
+        if (result.getResultPoints && typeof result.getResultPoints === 'function') {
+            const resultPoints = result.getResultPoints();
+            if (resultPoints && resultPoints.length > 0) {
+                // Find the bounding box from the result points
+                let minX = Number.MAX_VALUE;
+                let minY = Number.MAX_VALUE;
+                let maxX = Number.MIN_VALUE;
+                let maxY = Number.MIN_VALUE;
+
+                for (let i = 0; i < resultPoints.length; i++) {
+                    const point = resultPoints[i];
+                    if (point) {
+                        const x = point.getX ? point.getX() : point.x;
+                        const y = point.getY ? point.getY() : point.y;
+                        if (x !== undefined && y !== undefined) {
+                            minX = Math.min(minX, x);
+                            minY = Math.min(minY, y);
+                            maxX = Math.max(maxX, x);
+                            maxY = Math.max(maxY, y);
+                        }
+                    }
+                }
+
+                if (minX !== Number.MAX_VALUE && minY !== Number.MAX_VALUE &&
+                    maxX !== Number.MIN_VALUE && maxY !== Number.MIN_VALUE) {
+                    bounds = {
+                        x: minX,
+                        y: minY,
+                        width: maxX - minX,
+                        height: maxY - minY
+                    };
+                }
+            }
+        }
+
         return {
             text: result.text,
             format: QrcodeResultFormat.create(
                 this.toHtml5QrcodeSupportedFormats(result.format)),
-                debugData: this.createDebugData()
+            bounds: bounds,
+            debugData: this.createDebugData()
         };
     }
 
