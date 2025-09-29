@@ -3,7 +3,7 @@
 
 ECHO Initiating webpack build sequence.
 
-call webpack
+call npx webpack --config webpack.config.js
 
 :: Script copied to dist/html5-qrcode.min.js
 :: Fork content of 'webpack_append_data.min.js' to final js file to
