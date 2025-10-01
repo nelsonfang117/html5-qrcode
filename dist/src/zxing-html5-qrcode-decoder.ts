@@ -112,6 +112,8 @@ export class ZXingHtml5QrcodeDecoder implements QrcodeDecoderAsync {
 
         // Extract coordinate data from result points if available
         let bounds = undefined;
+        // Make sure it's safe to call getResultPoints()
+        // getResultPoints() is a method provided by ZXing. It contains objects representing coordinates.
         if (result.getResultPoints && typeof result.getResultPoints === 'function') {
             const resultPoints = result.getResultPoints();
             if (resultPoints && resultPoints.length > 0) {
