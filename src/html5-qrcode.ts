@@ -320,10 +320,12 @@ export class Html5Qrcode {
         let experimentalFeatureConfig : ExperimentalFeaturesConfig | undefined;
         let configObject: Html5QrcodeFullConfig | undefined;
         if (typeof configOrVerbosityFlag == "boolean") {
-            this.verbose = configOrVerbosityFlag === true;
+            // this.verbose = configOrVerbosityFlag === true;
+            this.verbose = false;
         } else if (configOrVerbosityFlag) {
             configObject = configOrVerbosityFlag;
-            this.verbose = configObject.verbose === true;
+            // this.verbose = configObject.verbose === true;
+            this.verbose = false;
             experimentalFeatureConfig = configObject.experimentalFeatures;
         }
         
