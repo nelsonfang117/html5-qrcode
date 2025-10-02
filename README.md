@@ -1,5 +1,5 @@
 # Html5-QRCode 
-
+Nelson: I inserted some coordinate/location data to be returned as part of bounds
 ## Important - Looking for new owners for this project.
 
 If interested, please reach out at `minhazav@gmail.com`.
