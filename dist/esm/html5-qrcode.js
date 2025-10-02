@@ -93,11 +93,11 @@ var Html5Qrcode = (function () {
         var experimentalFeatureConfig;
         var configObject;
         if (typeof configOrVerbosityFlag == "boolean") {
-            this.verbose = configOrVerbosityFlag === true;
+            this.verbose = false;
         }
         else if (configOrVerbosityFlag) {
             configObject = configOrVerbosityFlag;
-            this.verbose = configObject.verbose === true;
+            this.verbose = false;
             experimentalFeatureConfig = configObject.experimentalFeatures;
         }
         this.logger = new BaseLoggger(this.verbose);
